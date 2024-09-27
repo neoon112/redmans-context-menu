@@ -13,12 +13,15 @@ if (-Not (Test-Path -Path $renameToFolder)) {
 
 $fileUrl1 = "https://raw.githubusercontent.com/neoon112/renameto/refs/heads/main/Renameto.ps1"
 $fileUrl2 = "https://raw.githubusercontent.com/neoon112/renameto/refs/heads/main/RunRenameFile.vbs"
+$fileUrl3 = "https://raw.githubusercontent.com/neoon112/renameto/refs/heads/main/RenameToUninstaller.ps1"
 
 $destination1 = "$renameToFolder\Renameto.ps1"
 $destination2 = "$renameToFolder\RunRenameFile.vbs"
+$destination3 = "$renameToFolder\RenameToUninstaller.ps1"
 
 Invoke-WebRequest -Uri $fileUrl1 -OutFile $destination1
 Invoke-WebRequest -Uri $fileUrl2 -OutFile $destination2
+Invoke-WebRequest -Uri $fileUrl3 -OutFile $destination3
 
 Write-Host "Files downloaded to $renameToFolder"
 
