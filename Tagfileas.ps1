@@ -3,7 +3,7 @@ $suffix = $args[1]
 
 # Everything that says #uncomment you can uncomment for a log file to debug if this does not work
 
-#$logFile = "C:\Apps\RenameTo\script_log.txt" # uncomment
+#$logFile = "C:\Apps\Redmans-Context-Menu\script_log.txt" # uncomment
 #Start-Transcript -Path $logFile # uncomment
 
 try {
