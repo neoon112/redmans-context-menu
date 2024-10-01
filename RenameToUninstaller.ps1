@@ -1,1 +1,0 @@
-Remove-Item -LiteralPath "Registry::HKEY_CLASSES_ROOT\*\shell\RenameTo" -Recurse -Force
