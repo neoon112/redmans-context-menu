@@ -1,8 +1,9 @@
 Set objShell = CreateObject("WScript.Shell")
 Set objArgs = WScript.Arguments
 
-' Construct the PowerShell command
-powershellCommand = "powershell.exe -ExecutionPolicy Bypass -File ""C:\Apps\Redmans-Context-Menu\SendTo.ps1"" """ & objArgs(0) & """"
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Set tempFile = objFSO.CreateTextFile("C:\Apps\Redmans-Context-Menu\tempFilePath.txt", True)
+tempFile.WriteLine(objArgs(0))
+tempFile.Close
 
-' Run the PowerShell script
-objShell.Run powershellCommand, 0, True
+objShell.Run "schtasks /run /tn ""SendTo"""
