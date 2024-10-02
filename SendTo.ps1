@@ -1,27 +1,24 @@
-param (
-    [string]$filePath
-)
+$logFile = "C:\Apps\Redmans-Context-Menu\script-log.txt"
+
+"Script started at $(Get-Date)" | Out-File $logFile -Append
+
+$filePath = Get-Content "C:\Apps\Redmans-Context-Menu\tempFilePath.txt"
+
+"File path: $filePath" | Out-File $logFile -Append
 
 $url = "" #URL FOR DATABASE
 
-$fileContent = Get-Content -Path $filePath -Raw
-
-$body = @{
-    "fileName" = [System.IO.Path]::GetFileName($filePath)
-    "fileContent" = $fileContent
+try {
+    $response = Invoke-RestMethod -Uri $url -Method Post -InFile $filePath -ContentType "application/octet-stream"
+    
+    if ($response -eq "") {
+        "Successfully uploaded at $(Get-Date)" | Out-File $logFile -Append
+    } else {
+        "Response: $response" | Out-File $logFile -Append
+    }
+}
+catch {
+    "Error occurred during upload: $($_.Exception.Message)" | Out-File $logFile -Append
 }
 
-$response = Invoke-RestMethod -Uri $url -Method Post -Body ($body | ConvertTo-Json) -ContentType "application/json"
-
-$response
-
-Add-Type -AssemblyName System.Windows.Forms
-
-if ($response -eq "")
-{
-    [System.Windows.Forms.MessageBox]::Show("Successfully uploaded!", "Result", 'OK', 'Information')
-}
-else
-{
-    [System.Windows.Forms.MessageBox]::Show("$response", "Error", 'OK', 'Error')   
-}
+"Script finished at $(Get-Date)" | Out-File $logFile -Append
