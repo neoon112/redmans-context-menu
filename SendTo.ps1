@@ -20,9 +20,9 @@ if (-Not (Test-Path $filePath)) {
     exit
 }
 
-$url = "https://prod-09.australiasoutheast.logic.azure.com/workflows/fb85df8287ff4666839ef6bcaf575eba/triggers/manual/paths/invoke/type/property/id/id/pass/123?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=MarU2y6QFL52zLdm9jauPVFH9k3MtbvrlkpU6IvbfjU" #URL FOR DATABASE
+$url = "" #URL FOR DATABASE
 
-$fileExtension = [System.IO.Path]::GetExtension($filePath)
+$fileExtension = [System.IO.Path]::GetExtension($filePath).ToLower()
 
 $contentType = switch ($fileExtension) {
     ".txt" { "text/plain" }
@@ -32,10 +32,30 @@ $contentType = switch ($fileExtension) {
     ".jpg" { "image/jpeg" }
     ".jpeg" { "image/jpeg" }
     ".png" { "image/png" }
+    ".gif" { "image/gif" }
+    ".bmp" { "image/bmp" }
+    ".tiff" { "image/tiff" }
     ".pdf" { "application/pdf" }
+    ".doc" { "application/msword" }
     ".docx" { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }
+    ".xls" { "application/vnd.ms-excel" }
     ".xlsx" { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
     ".xlsm" { "application/vnd.ms-excel.sheet.macroEnabled.12" }
+    ".html" { "text/html" }
+    ".htm" { "text/html" }
+    ".hthml" { "text/html" }
+    ".msg" { "application/vnd.ms-outlook" }
+    ".zip" { "application/zip" }
+    ".dat" { "application/octet-stream" }
+    ".myo" { "application/octet-stream" }
+    ".myox" { "application/octet-stream" }
+    ".mmap" { "application/octet-stream" }
+    ".jng" { "image/x-jng" }
+    ".webp" { "image/webp" }
+    ".raw" { "image/x-raw" }
+    ".cur" { "image/x-win-bitmap" }
+    ".psb" { "application/octet-stream" }
+    ".xcf" { "image/x-xcf" }
     default { "application/octet-stream" } # Fallback for unsupported types
 }
 
