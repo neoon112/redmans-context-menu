@@ -73,12 +73,19 @@ Set-ItemProperty -Path "$basePath\VAL\Command" -Name "(default)" -Value 'wscript
 Set-ItemProperty -Path "$basePath\INC\Command" -Name "(default)" -Value 'wscript "C:\Apps\Redmans-Context-Menu\Tagfileas.vbs" "%1" " INC"' -Force
 Set-ItemProperty -Path "$basePath\ISSUE\Command" -Name "(default)" -Value 'wscript "C:\Apps\Redmans-Context-Menu\Tagfileas.vbs" "%1" " ISSUE"' -Force
 
+# below this is the post links #
+
 New-Item -Path "$basePath\QB" -Force
 New-Item -Path "$basePath\QB\Command" -Force
-Set-ItemProperty -Path "$basePath\QB\Command" -Name "(default)" -Value 'wscript "C:\Apps\Redmans-Context-Menu\SendTo.vbs" "%1"' -Force
+Set-ItemProperty -Path "$basePath\QB\Command" -Name "(default)" -Value 'wscript "C:\Apps\Redmans-Context-Menu\SendTo.vbs" "%1" "QB_LINK"' -Force
+
+#----------------------------------#
 
 Write-Host "Registry keys created successfully."
 
 Stop-Process -Name explorer -Force; Start-Process explorer.exe
 
 Write-Host "Restarted Explorer successfully."
+
+Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.MessageBox]::Show("Successfully installed in $storedFolder.", "Redmans-Context-Menu", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
