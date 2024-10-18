@@ -57,6 +57,7 @@ function Show-CustomInputBox {
         $comboBox.Width = 430
         $comboBox.Location = New-Object System.Drawing.Point(10, 60)
         $comboBox.DropDownStyle = 'DropDownList'
+        $comboBox.MaxDropDownItems = 20
         $comboBox.Items.AddRange($options)
         $form.Controls.Add($comboBox)
 
@@ -72,6 +73,7 @@ function Show-CustomInputBox {
         $buttonCancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
         $buttonCancel.Add_Click({
             $form.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+            $form.Tag = "[CANCELLED]"
             $form.Close()
         })
         $form.Controls.Add($buttonCancel)
@@ -79,16 +81,6 @@ function Show-CustomInputBox {
         $form.AcceptButton = $buttonOK
         $form.CancelButton = $buttonCancel
 
-        try {
-            $result = $form.ShowDialog()
-            if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-                return $comboBox.SelectedItem
-            } else {
-                return $null
-            }
-        } catch {
-            return $null
-        }
     } else {
         $textBox = New-Object System.Windows.Forms.TextBox
         $textBox.Width = 430
@@ -107,25 +99,33 @@ function Show-CustomInputBox {
         $buttonCancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
         $buttonCancel.Add_Click({
             $form.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+            $form.Tag = "[CANCELLED]"
             $form.Close()
         })
         $form.Controls.Add($buttonCancel)
 
         $form.AcceptButton = $buttonOK
         $form.CancelButton = $buttonCancel
+    }
 
-        try {
-            $result = $form.ShowDialog()
-            if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-                return $textBox.Text
+    try {
+        $result = $form.ShowDialog()
+        if ($form.Tag -eq "[CANCELLED]") {
+            return "[CANCELLED]"
+        } elseif ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+            if ($options.Count -gt 0) {
+                return $comboBox.SelectedItem
             } else {
-                return $null
+                return $textBox.Text
             }
-        } catch {
-            return $null
+        } else {
+            return "[CANCELLED]"
         }
+    } catch {
+        return "[CANCELLED]"
     }
 }
+
 
 
 $optionsCsvPath = "C:\Apps\Redmans-Context-Menu\FileTypes.csv" # Location to get the dropdown options
@@ -138,19 +138,35 @@ if (Test-Path $optionsCsvPath) {
 
 $iconPath = "C:\Apps\Redmans-Context-Menu\Redmans.ico"
 $fileType = Show-CustomInputBox -message "Please select the file type" -title "File Type Entry" -iconPath $iconPath -options $options
-if (-not $fileType) { 
+if (-not $fileType) {
+    if ($debug -eq "true") {
+        "Script cancelled at $(Get-Date) (at select the file type)" | Out-File $logFile -Append
+        "" | Out-File $logFile -Append
+    }
     exit
 }
 
-$jobId = Show-CustomInputBox -message "Please enter the job ID" -title "Job ID Entry" -iconPath $iconPath
+$jobId = Show-CustomInputBox -message "Please enter the ID for the filing location" -title "Filing Location Entry" -iconPath $iconPath
 if (-not $jobId) { 
+    if ($debug -eq "true") {
+        "Script cancelled at $(Get-Date) (at ID for filing location)" | Out-File $logFile -Append
+        "" | Out-File $logFile -Append
+    }
     exit
 }
 
 $userComment = Show-CustomInputBox -message "Please enter any comments" -title "Comment Entry" -iconPath $iconPath
-if (-not $userComment) { 
+if (-not $userComment) {
     $userComment = ""
 }
+if ($userComment -eq "[CANCELLED]") {
+    if ($debug -eq "true") {
+        "Script cancelled at $(Get-Date) (at comment entry)" | Out-File $logFile -Append
+        "" | Out-File $logFile -Append
+    }
+    exit
+}
+
 
 $username = [Environment]::UserName
 
