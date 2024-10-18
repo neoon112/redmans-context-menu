@@ -18,13 +18,15 @@ $fileUrl3 = "https://raw.githubusercontent.com/neoon112/$nameOfProgram/refs/head
 $fileUrl4 = "https://raw.githubusercontent.com/neoon112/$nameOfProgram/refs/heads/main/Redmans.ico"
 $fileUrl5 = "https://raw.githubusercontent.com/neoon112/$nameOfProgram/refs/heads/main/SendTo.ps1"
 $fileUrl6 = "https://raw.githubusercontent.com/neoon112/$nameOfProgram/refs/heads/main/SendTo.vbs"
+$fileUrl7 = "https://raw.githubusercontent.com/neoon112/$nameOfProgram/refs/heads/main/FileTypes.csv"
 
 $destination1 = "$storedFolder\Tagfileas.ps1"
 $destination2 = "$storedFolder\Tagfileas.vbs"
-$destination3 = "$storedFolder\RenameToUninstaller.ps1"
+$destination3 = "$storedFolder\$nameOfProgram-Uninstaller.ps1"
 $destination4 = "$storedFolder\Redmans.ico"
 $destination5 = "$storedFolder\SendTo.ps1"
 $destination6 = "$storedFolder\SendTo.vbs"
+$destination7 = "$storedFolder\FileTypes.csv"
 
 Invoke-WebRequest -Uri $fileUrl1 -OutFile $destination1
 Invoke-WebRequest -Uri $fileUrl2 -OutFile $destination2
@@ -32,6 +34,7 @@ Invoke-WebRequest -Uri $fileUrl3 -OutFile $destination3
 Invoke-WebRequest -Uri $fileUrl4 -OutFile $destination4
 Invoke-WebRequest -Uri $fileUrl5 -OutFile $destination5
 Invoke-WebRequest -Uri $fileUrl6 -OutFile $destination6
+Invoke-WebRequest -Uri $fileUrl7 -OutFile $destination7
 
 Write-Host "Files downloaded to $storedFolder"
 
